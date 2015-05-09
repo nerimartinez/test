@@ -1,0 +1,103 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <h2>Recent friends' checkins</h2>
+    </div>
+</div>
+
+@{
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var recentVenues = jss.Serialize(ViewBag.RecentVenues);
+    var wl = jss.Serialize(ViewBag.WhishList);
+}
+<div class="container" style="">
+    <div id="whishlistcontainer">
+        <h2>Whishlist</h2>
+        <div data-bind="foreach: whishlist">
+            <div>
+                <div data-bind='text: VenueName'></div>
+                <div data-bind='text: VenueId'></div>
+                <div data-bind='text: UserId'></div>
+                <img data-bind="attr:{'src': VenuePictureUrl}" />
+                <img data-bind="attr:{'src': UserPictureUrl}" />
+                <button data-bind="click: $root.removeFromWhishlist" type="button">Remove</button>
+            </div>
+        </div>
+    </div>
+    asdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+    <div data-bind="foreach: recent">
+        <h2>Recent</h2>
+        <div class="col-md-6" style="position: relative">
+            <img data-bind="attr:{'src': VenuePictureUrl}" style="" />
+            <div style="float: right;">
+                <div data-bind='text: VenueName'></div>
+                <div data-bind='text: VenueId'></div>
+                <div data-bind='text: UserId'></div>
+            </div>
+            <div style="position: absolute; left: 200px; top: 0px;">
+                <img data-bind="attr:{'src': UserPictureUrl}" style="border: 3px solid #BADA55; width: 70px; height: 70px; background-repeat: no-repeat; background-position: 50%; border-radius: 50%;" />
+            </div>
+            <button data-bind="click: $root.addToWhishlist" type="button">Add</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function whishlistViewModel() {
+        var self = this;
+        self.recent = [];
+        var userInfo = JSON.parse('@Html.Raw(recentVenues)');
+        self.recent = ko.observableArray(userInfo);
+
+        var wl = JSON.parse('@Html.Raw(wl)');
+        self.whishlist = ko.observableArray(wl);
+
+        self.addToWhishlist = function (item) {
+            $.post("/api/whishlist/additem", item, function (data) {
+                item.WhishListItemId = data;
+                self.whishlist.push(item);
+                self.recent.remove(item);
+                if ((self.whishlist().length > 0) && (!$('#whishlistcontainer').is(':visible'))) {
+                    $("#whishlistcontainer").slideDown();
+                }
+            });
+        }
+
+        self.removeFromWhishlist = function (item) {
+            $.post("/api/whishlist/removeitem?id=" + item.WhishListItemId, function (data) {
+                item.WhishListItemId = 0;
+                self.recent.push(item);
+                self.whishlist.remove(item);
+                if (self.whishlist().length == 0) {
+                    $("#whishlistcontainer").slideUp();
+                }
+            });
+
+        }
+    }
+    ko.applyBindings(new whishlistViewModel());
+</script>
+
+@*<div class="container" style="background: red;  margin-right: -15px;  margin-left: -15px; min-height: 100%; 
+  min-height: 100vh; ">
+
+    <div >                   
+
+            @foreach (var item in ViewBag.RecentVenues)
+            {                      
+                <div  class="col-md-1"></div>
+                    <div  class="col-md-4"style=" background: blue; border: 3px green solid;  padding-right: 15px;  padding-left: 15px;">
+                        <div>
+                            <img src="@item.VenuePictureUrl" alt="Smiley face" height="256" width="256"></div>
+                        <div style="position: absolute; z-index: 1; top: 9px; right: 205px; border: 1px white solid; display: block;">
+                            <img src="@item.UserPictureUrl" alt="Smiley face" height="42" width="42"></div>
+                        <button style="position: absolute; z-index: 1; top: 220px; right: 10px; border: 1px white solid; display: block;" type="button">+</button>
+                    </div>
+                <div  class="col-md-1"></div>
+            }
+        
+    </div>
+
+</div>*@
+

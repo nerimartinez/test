@@ -1,0 +1,9 @@
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\obj\Debug\SharpSquare.Tests.csprojResolveAssemblyReference.cache
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\bin\Debug\SharpSquare.Tests.dll
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\bin\Debug\SharpSquare.Tests.pdb
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\bin\Debug\SharpSquare.dll
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\bin\Debug\Newtonsoft.Json.dll
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\bin\Debug\SharpSquare.pdb
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\bin\Debug\Newtonsoft.Json.xml
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\obj\Debug\SharpSquare.Tests.dll
+C:\Users\neron\Desktop\jaya\SharpSquare-master\SharpSquare-master\Tests\SharpSquare.Tests\obj\Debug\SharpSquare.Tests.pdb
