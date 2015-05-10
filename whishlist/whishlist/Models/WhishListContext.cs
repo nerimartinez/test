@@ -9,6 +9,6 @@ namespace whishlist.Models
 {
     public class WhishListContext  : DbContext 
     {
-        public DbSet<WhishListItem> WhishList { get; set; }
+        public DbSet<WhishListItem> WhishList { get; set; }        
     }
 }

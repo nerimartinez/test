@@ -26,3 +26,5 @@ c:\jaya\test\whishlist\whishlist\bin\System.Web.WebPages.Razor.xml
 c:\jaya\test\whishlist\whishlist\obj\Debug\whishlist.csprojResolveAssemblyReference.cache
 c:\jaya\test\whishlist\whishlist\obj\Debug\whishlist.dll
 c:\jaya\test\whishlist\whishlist\obj\Debug\whishlist.pdb
+C:\jaya\test\whishlist\whishlist\obj\Debug\whishlist.Migrations.InitialCreate.resources
+C:\jaya\test\whishlist\whishlist\obj\Debug\whishlist.csproj.GenerateResource.Cache

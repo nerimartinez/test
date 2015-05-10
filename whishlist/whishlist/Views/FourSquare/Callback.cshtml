@@ -1,10 +1,4 @@
-﻿<div class="row">
-    <div class="col-lg-12">
-        <h2>Recent friends' checkins</h2>
-    </div>
-</div>
-
-@{
+﻿@{
     var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
     var recentVenues = jss.Serialize(ViewBag.RecentVenues);
     var wl = jss.Serialize(ViewBag.WhishList);
@@ -12,46 +6,65 @@
 <div class="container" style="">
     <div id="whishlistcontainer">
         <h2>Whishlist</h2>
-        <div data-bind="foreach: whishlist">
-            <div>
-                <div data-bind='text: VenueName'></div>
-                <div data-bind='text: VenueId'></div>
-                <div data-bind='text: UserId'></div>
-                <img data-bind="attr:{'src': VenuePictureUrl}" />
-                <img data-bind="attr:{'src': UserPictureUrl}" />
-                <button data-bind="click: $root.removeFromWhishlist" type="button">Remove</button>
+        <div class="row" style="border-radius: 25px; border: 2px solid #8AC007; padding: 20px;">
+            <div id="spinnerWhishlist" style="   width:100px;    height: 100px;    position: relative;    top: 50%;    left: 50%;    background:url(/content/images/loading.gif) no-repeat center #fff;         overflow: auto;">            </div>
+            <div data-bind="foreach: whishlist">
+                <div class="col-md-2 col-sm-4 col-xs-12" style="position: relative">
+                    <div class="row">
+                        <div data-bind='text: VenueName' style="float: left; font-weight: bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 80%;"></div>
+                    </div>
+                    <div class="row">
+                        <button data-bind="click: $root.removeFromWhishlist" type="button" style="position: absolute; left: 78px; bottom: 1px;">Remove</button>
+                        <img data-bind="attr:{'src': VenuePictureUrl}" style="width: 150px; height: auto;" />
+                        <div style="position: absolute; left: 78px; top: 25px;">
+                            <img data-bind="attr:{'src': UserPictureUrl}" style="border: 3px solid #BADA55; width: 70px; height: 70px; background-repeat: no-repeat; background-position: 50%; border-radius: 50%;" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    asdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    <div class="col-xs-12">
+        <hr>
+    </div>
+    <h2>Recent Venues</h2>
+    <div class="row" style="border-radius: 25px; border: 2px solid #8AC007; padding: 20px;">
+        <div id="spinnerRecent" style="   width:100px;    height: 100px;    position: relative;    top: 50%;    left: 50%;    background:url(/content/images/loading.gif) no-repeat center #fff;         overflow: auto;">            </div>
+        <div data-bind="foreach: recent">
 
-    <div data-bind="foreach: recent">
-        <h2>Recent</h2>
-        <div class="col-md-6" style="position: relative">
-            <img data-bind="attr:{'src': VenuePictureUrl}" style="" />
-            <div style="float: right;">
-                <div data-bind='text: VenueName'></div>
-                <div data-bind='text: VenueId'></div>
-                <div data-bind='text: UserId'></div>
+            <div class="col-md-6 col-sm-4 col-xs-12" style="position: relative">
+                <img data-bind="attr:{'src': VenuePictureUrl}" style="" />
+                <div style="float: right;">
+                    <div data-bind='text: VenueName'></div>
+                    <div data-bind='text: VenueId'></div>
+                    <div data-bind='text: UserId'></div>
+                </div>
+                <div style="position: absolute; left: 200px; top: 0px;">
+                    <img data-bind="attr:{'src': UserPictureUrl}" style="border: 3px solid #BADA55; width: 70px; height: 70px; background-repeat: no-repeat; background-position: 50%; border-radius: 50%;" />
+                </div>
+                <button data-bind="click: $root.addToWhishlist" type="button">Add</button>
             </div>
-            <div style="position: absolute; left: 200px; top: 0px;">
-                <img data-bind="attr:{'src': UserPictureUrl}" style="border: 3px solid #BADA55; width: 70px; height: 70px; background-repeat: no-repeat; background-position: 50%; border-radius: 50%;" />
-            </div>
-            <button data-bind="click: $root.addToWhishlist" type="button">Add</button>
         </div>
     </div>
 </div>
 
-<script>
+<script>      
+    function mappedItem(data) {
+        this.VenueName = ko.observable(data.VenueName);
+        this.VenueId = ko.observable(data.VenueId);
+        this.UserId = ko.observable(data.UserId);
+        this.VenuePictureUrl = ko.observable(data.VenuePictureUrl);
+        this.UserPictureUrl = ko.observable(data.UserPictureUrl);
+    }
 
     function whishlistViewModel() {
         var self = this;
-        self.recent = [];
-        var userInfo = JSON.parse('@Html.Raw(recentVenues)');
-        self.recent = ko.observableArray(userInfo);
+        self.recent = ko.observableArray([]);
+        self.whishlist = ko.observableArray([]);
 
-        var wl = JSON.parse('@Html.Raw(wl)');
-        self.whishlist = ko.observableArray(wl);
+        //var recentVenues = JSON.parse(data.recentVenues);        
+        //var wl = JSON.parse(data.whishlist);
+        
 
         self.addToWhishlist = function (item) {
             $.post("/api/whishlist/additem", item, function (data) {
@@ -73,10 +86,29 @@
                     $("#whishlistcontainer").slideUp();
                 }
             });
-
         }
+
+        $.get("/api/whishlist/GetWhishlist", function (data) {
+            var mappedWhishlist = $.map(data, function (item) { return new mappedItem(item) });
+            self.whishlist(mappedWhishlist);
+            $("#spinnerWhishlist").hide();
+        });
+
+        $.get("/api/whishlist/GetRecentVenues?code=" + getURLParameter("code"), function (data) {
+            var mappedRecent = $.map(data, function (item) { return new mappedItem(item) });
+            self.recent(mappedRecent);
+            $("#spinnerRecent").hide();
+        });        
     }
+
     ko.applyBindings(new whishlistViewModel());
+
+    function getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null
+    }
+
+    
+    
 </script>
 
 @*<div class="container" style="background: red;  margin-right: -15px;  margin-left: -15px; min-height: 100%; 
