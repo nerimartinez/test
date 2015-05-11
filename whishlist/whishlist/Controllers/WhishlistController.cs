@@ -67,26 +67,26 @@ namespace whishlist.Controllers
                     { "limit", limit}                    
             });
 
-            foreach (var i in recent)
+            foreach (var item in recent)
             {
                 //remove those that already are in the whishlist
-                if (!whishlist.Any(x => x.VenueId == i.venue.id))
+                if (!whishlist.Any(x => x.VenueId == item.venue.id))
                 {
-                    var venuePicListAux = clientWithToken.GetVenuePhotos(i.venue.id, null);
+                    var venuePicListAux = clientWithToken.GetVenuePhotos(item.venue.id, null);
                     var pic = venuePicListAux.Count > 0 ? venuePicListAux.ElementAt(0) : null;
-                    var usrPicAux = PictureHelper.GetUserPictureUrl(i.user);
+                    var usrPicAux = PictureHelper.GetUserPictureUrl(item.user);
                     
                     recentVenues.Add(new WhishListItem
                     {
-                        UserId = i.user.id,
-                        VenueId = i.venue.id,
+                        UserId = item.user.id,
+                        VenueId = item.venue.id,
                         VenuePictureUrl = pic == null ? ConfigurationManager.AppSettings["noImagePath"] : PictureHelper.GetVenuePictureUrl(pic),
                         UserPictureUrl = usrPicAux,
-                        VenueName = i.venue.name,
+                        VenueName = item.venue.name,
                         WhishListItemId = 0,
-                        VenueStreet = i.venue.location.crossStreet + " - " + i.venue.location.city,
-                        VenueDescription = i.venue.description,
-                        VenueEmail = i.venue.contact.email
+                        VenueStreet = item.venue.location.crossStreet + " - " + item.venue.location.city,
+                        VenueDescription = item.venue.description,
+                        VenueEmail = item.venue.contact.email
                     });
                 }
             }
@@ -122,7 +122,7 @@ namespace whishlist.Controllers
             var token = "";
             var context = HttpContext.Current;
             if (context != null)
-            {
+            {//get token from cache
                 if (context.Cache["token"] == null)
                 {
                     client = new FourSquare.SharpSquare.Core.SharpSquare(clientId, clientSecret);
