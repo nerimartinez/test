@@ -131,11 +131,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\PictureHelper.cs" />
-    <Compile Include="Migrations\201505080032576_InitialCreate.cs" />
-    <Compile Include="Migrations\201505080032576_InitialCreate.Designer.cs">
-      <DependentUpon>201505080032576_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201505110234568_last.cs" />
+    <Compile Include="Migrations\201505110234568_last.Designer.cs">
+      <DependentUpon>201505110234568_last.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserToken.cs" />
+    <Compile Include="Migrations\201505110236037_lastd.cs" />
+    <Compile Include="Migrations\201505110236037_lastd.Designer.cs">
+      <DependentUpon>201505110236037_lastd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\UserVM.cs" />
     <Compile Include="Models\WhishListContext.cs" />
     <Compile Include="Models\WhishListItem.cs" />
     <Compile Include="Models\WhishlistVM.cs" />
@@ -204,6 +209,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\whishlist.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\bootstrap\bootstrap-theme.css.map" />
@@ -228,6 +234,7 @@
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\whishlist.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -272,8 +279,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201505080032576_InitialCreate.resx">
-      <DependentUpon>201505080032576_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201505110234568_last.resx">
+      <DependentUpon>201505110234568_last.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505110236037_lastd.resx">
+      <DependentUpon>201505110236037_lastd.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

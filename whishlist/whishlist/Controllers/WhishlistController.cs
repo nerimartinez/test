@@ -21,19 +21,19 @@ namespace whishlist.Controllers
         private string clientSecret = ConfigurationManager.AppSettings["clientSecret"];
         protected FourSquare.SharpSquare.Core.SharpSquare client;
         protected FourSquare.SharpSquare.Core.SharpSquare clientWithToken;
-        
+
 
         public void RemoveItem(int id)
         {
             using (var db = new WhishListContext())
             {
-                var item = db.WhishList.FirstOrDefault(x => x.WhishListItemId == id);                
+                var item = db.WhishList.FirstOrDefault(x => x.WhishListItemId == id);
                 if (item != null)
                     db.WhishList.Remove(item);
-                db.SaveChanges();                
-            }            
+                db.SaveChanges();
+            }
         }
-        
+
         public int AddItem([FromBody]WhishListItem item)
         {
             using (var db = new WhishListContext())
@@ -46,30 +46,12 @@ namespace whishlist.Controllers
 
         public List<WhishListItem> GetRecentVenues(string code)
         {
-            var context = HttpContext.Current;
-            
             List<WhishListItem> recentVenues = new List<WhishListItem>();
             List<WhishListItem> whishlist = new List<WhishListItem>();
-            var token = "";
             var whishlistCount = 0;
-            if (context != null)
-            {
-                if (context.Cache["token"] == null)
-                {
-                    client = new FourSquare.SharpSquare.Core.SharpSquare(clientId, clientSecret);
-                    token = client.GetAccessToken(ConfigurationManager.AppSettings["callbackurl"], code);
-                    context.Cache["token"] = token;
-                }
-                else 
-                {
-                    token = context.Cache["token"].ToString();
-                }
-            }            
-            
-            clientWithToken = new FourSquare.SharpSquare.Core.SharpSquare(clientId, clientSecret, token);
-            
-            //get user data
-            var user = clientWithToken.GetUser("self");
+
+            if (clientWithToken == null)
+                clientWithToken = GetClient(code);
 
             //get venues already added
             using (var db = new WhishListContext())
@@ -93,19 +75,21 @@ namespace whishlist.Controllers
                     var venuePicListAux = clientWithToken.GetVenuePhotos(i.venue.id, null);
                     var pic = venuePicListAux.Count > 0 ? venuePicListAux.ElementAt(0) : null;
                     var usrPicAux = PictureHelper.GetUserPictureUrl(i.user);
-
+                    
                     recentVenues.Add(new WhishListItem
                     {
                         UserId = i.user.id,
                         VenueId = i.venue.id,
-                        VenuePictureUrl = pic == null ? "/content/images/no_image.png" : PictureHelper.GetVenuePictureUrl(pic),
+                        VenuePictureUrl = pic == null ? ConfigurationManager.AppSettings["noImagePath"] : PictureHelper.GetVenuePictureUrl(pic),
                         UserPictureUrl = usrPicAux,
                         VenueName = i.venue.name,
-                        WhishListItemId = 0
+                        WhishListItemId = 0,
+                        VenueStreet = i.venue.location.crossStreet + " - " + i.venue.location.city,
+                        VenueDescription = i.venue.description,
+                        VenueEmail = i.venue.contact.email
                     });
                 }
             }
-
             return recentVenues;
         }
 
@@ -115,10 +99,43 @@ namespace whishlist.Controllers
             //get venues already added
             using (var db = new WhishListContext())
             {
-                whishlist = db.WhishList.ToList();
+                if (db.WhishList.Count() > 0)
+                    whishlist = db.WhishList.ToList();
             }
             return whishlist;
         }
 
+        public UserVM GetUserData(string code)
+        {
+            if (clientWithToken == null)
+                clientWithToken = GetClient(code);
+            var user = clientWithToken.GetUser("self");
+            return new UserVM()
+            {
+                Name = user.firstName + " " + user.lastName,
+                PictureUrl = PictureHelper.GetUserPictureUrl(user)
+            };
+        }
+
+        private FourSquare.SharpSquare.Core.SharpSquare GetClient(string code)
+        {
+            var token = "";
+            var context = HttpContext.Current;
+            if (context != null)
+            {
+                if (context.Cache["token"] == null)
+                {
+                    client = new FourSquare.SharpSquare.Core.SharpSquare(clientId, clientSecret);
+                    token = client.GetAccessToken(ConfigurationManager.AppSettings["callbackurl"], code);
+                    context.Cache["token"] = token;
+                }
+                else
+                {
+                    token = context.Cache["token"].ToString();
+                }
+            }
+            return new FourSquare.SharpSquare.Core.SharpSquare(clientId, clientSecret, token);
+        }
     }
+
 }

@@ -1,0 +1,70 @@
+﻿
+/*classes*/
+.spinner {
+    width: 100px; height: 100px; position: relative; top: 50%; left: 50%; background: url(/content/images/loading.gif) no-repeat center #fff; overflow: auto;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.whishlistItem {
+    position: relative; margin-bottom: 10px
+}
+
+.whishlistVenueName {
+    float: left; font-weight: bold; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 80%;
+}
+
+.buttonAdd {
+     position: absolute; left: 110px; bottom: 3px;
+}
+
+.whishlistImg {
+    width: 150px; height: auto;
+}
+
+.whishlistUserImg {
+    position: absolute; left: 78px; top: 25px;border: 3px solid #BADA55; width: 70px; height: 70px; background-repeat: no-repeat; background-position: 50%; border-radius: 50%;
+}
+
+.recentVenueImg {
+    margin-left: 20px;
+}
+
+.recentItemContainer {
+    position: relative; margin-bottom: 10px; border-radius: 25px; border: 2px solid #8AC007;
+}
+
+.recentTextContainer {
+    position: absolute;  left: 282px;  top: 0px; width: 200px;
+}
+
+.recentVenueName {
+    font-weight: 900; 
+}
+
+.recentData {
+    font-style: italic;
+}
+
+.recentUserImg {
+    position: absolute; left: 200px; top: 0px;border: 3px solid #BADA55; width: 70px; height: 70px; background-repeat: no-repeat; background-position: 50%; border-radius: 50%;
+}
+
+/*by id*/
+#titleAndUserInfo {
+    margin-top: 10px;
+}
+
+#addedContainer {
+    border-radius: 25px; border: 2px solid #8AC007; padding: 20px;
+}
+
+#recentContainer {
+    padding: 20px;
+}

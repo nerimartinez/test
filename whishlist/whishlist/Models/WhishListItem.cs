@@ -13,5 +13,8 @@ namespace whishlist.Models
         public string VenuePictureUrl { get; set; }
         public string UserPictureUrl { get; set; }
         public string VenueName { get; set; }
+        public string VenueEmail { get; set; }
+        public string VenueStreet { get; set; }
+        public string VenueDescription { get; set; }
     }
 }

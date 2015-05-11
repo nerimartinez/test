@@ -5,13 +5,13 @@ namespace whishlist.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    public sealed partial class InitialCreate : IMigrationMetadata
+    public sealed partial class last : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialCreate));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(last));
         
         string IMigrationMetadata.Id
         {
-            get { return "201505080032576_InitialCreate"; }
+            get { return "201505110234568_last"; }
         }
         
         string IMigrationMetadata.Source
